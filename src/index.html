@@ -17,6 +17,7 @@
 </nav>
 </header>
 
+<div class="wrap">
 <ul id="bookmarklet-ui">
     <li class="form-line">
         <div class="form-group">
@@ -75,88 +76,7 @@
         </div>
     </li>
 </ul>
-
-<table class="table table-bordered table-sm">
-<tr>
-<th>
-<label for="bkm_result">判定結果</label></th>
-<td>
-<label class="mr-4">項目<select class="bkm_insert_pos" id="bkm_result_pos"></select></label>
-<label><input type="radio" name="bkm_result" value="はい">はい</label>
-<label><input type="radio" name="bkm_result" value="はい(注記)">はい(注記)</label>
-<label><input type="radio" name="bkm_result" value="いいえ">いいえ</label>
-<label><input type="radio" name="bkm_result" value="なし">なし</label>
-</td>
-</tr>
-<tr>
-<th><label for="bkm_comments">判定コメント</label></th>
-<td>
-<div class="form-group">
-<label class="mr-4">項目<select class="bkm_insert_pos" id="bkm_detail_pos"></select></label>
-<label><input type="radio" name="bkm_comment_status" value="0">はい</label>
-<label><input type="radio" name="bkm_comment_status" value="1">いいえ</label>
-<label class="ml-4"><input type="checkbox" name="bkm_comment_overwrite" value="0">追記有効</label>
-<label class="ml-2">位置
-<select id="bkm_comment_overwrite_pos">
-<option value="after">後</option>
-<option value="before">前</option>
-</select>
-</label>
-<br>
-<textarea class="form-control" rows="4" id="bkm_comments"></textarea><br>
-<button class="btn btn-secondary" onclick="clear_this_text('bkm_comments')">Clear</button>
 </div>
-</td>
-</tr>
-<tr>
-<th><label>対象ソースコード</label></th>
-<td>
-<div class="form-group">
-<label><input type="radio" name="bkm_descript_status" value="0">はい</label>
-<label><input type="radio" name="bkm_descript_status" value="1">いいえ</label>
-<label class="ml-4"><input type="checkbox" name="bkm_descript_overwrite" value="0">追記有効</label>
-<br>
-<textarea class="form-control" rows="4" id="bkm_descript"></textarea>
-<br><button class="btn btn-secondary" onclick="clear_this_text('bkm_descript')">Clear</button>
-</div>
-</td>
-</tr>
-<tr>
-<th><label for="bkm_srccode">修正ソースコード</label></th>
-<td>
-<div class="form-group">
-<label><input type="radio" name="bkm_srccode_status" value="0">はい</label>
-<label><input type="radio" name="bkm_srccode_status" value="1">いいえ</label>
-<label><input type="radio" name="bkm_srccode_status" value="2">正規表現置換</label>
-<label class="ml-4"><input type="checkbox" name="bkm_srccode_overwrite" value="0">追記有効</label>
-<br>
-<textarea class="form-control" rows="4" id="bkm_srccode"></textarea><br>
-<button onclick="clear_this_text('bkm_srccode')" class="btn btn-secondary">Clear</button><br>
-<label>検索パターン</label><br><input type="text" name="regx_text" id="regx_text" class="form-control"><br>
-<label>置換テキスト</label><br><textarea class="form-control" rows="2" name="regx_aftr_text" id="regx_after_text" rows="1"></textarea>
-<br><button class="btn btn-secondary" onclick="clear_this_text('regx_after_text')">Clear</button>
-</div>
-</td>
-</tr>
-<tr>
-<th><label>自動登録</label></th>
-<td>
-<label><input type="radio" name="bkm_autosave" value="0">はい</label>
-<label><input type="radio" name="bkm_autosave" value="1">いいえ</label>
-</td>
-</tr>
-<tr>
-<td colspan="2" class="codearea">
-<div class="form-group">
-<textarea id="bkm_code" class="form-control" rows="5"></textarea>
-</div>
-<div class="text-center">
-<button class="btn btn-primary" id="bkm_create_btn" onclick="bkm_create()">Create</button>
-<button class="btn btn-secondary" onclick="clear_this_text('bkm_code')">Clear</button>
-</div>
-</td>
-</tr>
-</table>
 
 </body>
 </html>
