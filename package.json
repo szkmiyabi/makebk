@@ -1,0 +1,19 @@
+{
+  "name": "makebk",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron src",
+    "build-windows": "electron-packager src makebk --platform=win32 --arch=all --overwrite --electron-version=9.0.4 --icon=src/icons/appicon.ico",
+    "build-macOS": "electron-packager src makebk --platform=darwin --arch=x64 --overwrite --electron-version=9.0.4 --icon=src/icons/appicon.icns"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^9.0.4",
+    "electron-packager": "^14.2.1"
+  }
+}

@@ -1,0 +1,31 @@
+@charset "utf-8";
+header {
+    background-color: bisque;
+}
+
+#bookmarklet-ui {
+    list-style: none;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding-inline-start: 0;
+}
+.form-line div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.form-line div div {
+    align-self: flex-start;
+}
+
+.form-line div div.bottom {
+    align-self: flex-end;
+}
+
+
+table.table th {
+    background: #f2f2f2;
+    color: #323435;
+    vertical-align: middle;
+}

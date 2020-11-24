@@ -1,0 +1,4 @@
+makebk-win32-arm64/
+makebk-win32-ia32/
+makebk-win32-x64/
+node_modules/
