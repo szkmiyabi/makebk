@@ -25,7 +25,7 @@ jQuery(function($){
     create_bkm_comment_add_point($("#bkm_comment_add_point_1"));
     
     //行を追加をクリック
-    $("#bkm_formgroup_add").on("click", function(){
+    $("#bkm_formgroup_add_btn").on("click", function(){
         //下処理
         var nx = $("#bookmarklet-ui li").length + 1;
         $("#bookmarklet-ui").append("<li>");
@@ -175,6 +175,12 @@ jQuery(function($){
         });
         $(srccode_div).append("<textarea>");
         $(srccode_div + " textarea").attr({id: "bkm_srccode_" + nx, class: "form-control"});
+    });
+    
+    //行を削除クリック
+    $("#bkm_formgroup_del_btn").on("click", function(){
+        if($("#bookmarklet-ui li").length < 2) return;
+        $("#bookmarklet-ui li:last-child").remove();
     });
     
 

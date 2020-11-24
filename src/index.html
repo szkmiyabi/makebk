@@ -13,11 +13,15 @@
 <header class="sticky-top bg-light">
 <nav class="navbar navbar-light">
 <h1>Make Bookmarklet</h1>
-    <div class="form-inline"><button class="btn btn-danger" id="bkm_formgroup_add">行を追加</button></div>
+    <div class="form-inline">
+        <button class="btn btn-primary" id="bkm_formgroup_add_btn">行を追加</button>
+        <button class="btn btn-danger" id="bkm_formgroup_del_btn">行を削除</button>
+    </div>
 </nav>
 </header>
 
 <div class="wrap">
+
 <ul id="bookmarklet-ui">
     <li class="form-line">
         <div class="form-group">
@@ -76,6 +80,17 @@
         </div>
     </li>
 </ul>
+
+<div class="form-group">
+    <label>ブックマークレットの生成</label>
+    <div class="form-inline">
+        <button class="btn btn-primary" id="bkm_single_create_btn">単一判定</button>
+        <button class="btn btn-info" id="bkm_all_create_btn">複数判定</button>
+        <button class="btn btn-danger" id="bkm_clear_btn">クリア</button>
+    </div>
+    <textarea id="bkm_body" class="form-control"></textarea>
+</div>
+    
 </div>
 
 </body>
