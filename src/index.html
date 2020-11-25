@@ -25,13 +25,16 @@
 <ul id="bookmarklet-ui">
     <li class="form-line">
         <div class="form-group">
-            <div>
-                <label for="bkm_nm_1">番号</label>
-                <select class="form-control" id="bkm_nm_1">
-                </select>
+            <div class="w90">
+                <label>番号</label>
+                <div class="form-check form-check-inline">
+                <input type="checkbox" class="form-check-input" id="check_row_1" checked="checked">
+                <label class="form-check-label">行選択</label>
+                </div>
+                <input type="text" class="form-control" value="1" id="bkm_nm_1">
             </div>
             <div>
-                <label for="bkm_sv_1">検査結果</label>
+                <label>検査結果</label>
                 <select class="form-control" id="bkm_sv_1">
                 </select>
             </div>
@@ -50,7 +53,7 @@
                 <textarea class="form-control" id="bkm_comment_1"></textarea>
             </div>
             <div>
-                <label for="bkm_description_1">対象ソースコード</label>
+                <label>対象ソースコード</label>
                 <div class="form-check form-check-inline">
                 <input type="radio" name="bmk_description_yes_no_1">
                 <label class="form-check-label">する</label>
@@ -60,7 +63,7 @@
                 <textarea class="form-control" id="bkm_description_1"></textarea>
             </div>
             <div>
-                <label for="bkm_srccode_1">修正ソースコード</label>
+                <label>修正ソースコード</label>
                 <div class="form-check form-check-inline">
                 <input type="radio" name="bmk_srccode_yes_no_regx_1">
                 <label class="form-check-label">する</label>
@@ -70,7 +73,7 @@
                 <label class="form-check-label">正規表現置換</label>
                 </div>
                 <div class="form-inline">
-                    <label for="bkm_regx_search_1">検索文字列</label>
+                    <label>検索文字列</label>
                     <input type="text" class="form-control" id="bkm_regx_search_1">
                     <label>置換文字列</label>
                     <input type="text" class="form-control" id="bkm_regx_replace_1">

@@ -22,3 +22,7 @@ header {
 .wrap {
     margin: 0 20px;
 }
+
+#bookmarklet-ui li div div:first-child {
+    width: 140px;
+}
