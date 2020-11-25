@@ -1,4 +1,26 @@
 jQuery(function($){
+    
+    //共用フィールドとメソッド（現時点では未使用）
+    const tab_sp = "<bkmk:tab>";
+	const br_sp = "<bkmk:br>";
+    const data_tab_sp = "<bkmk:data:tab>";
+    const data_br_sp = "<bkmk:data:br>";
+    
+    let text_clean = function(str) {
+	    str=str.replace(/^ +/m,"");
+	    str=str.replace(/\t+/m,"");
+	    str=str.replace(/(\r\n|\r|\n)/g,""); 
+	    return str;
+	};
+
+	let br_encode = function(str) {
+		return str.replace(/(\r|\n|\r\n)/mg, br_sp);
+	};
+
+	let br_decode = function(str) {
+		return str.replace(new RegExp(br_sp, "mg"), "\r\n");
+	};
+    
     //判定セレクトボックス生成
     var create_bkm_sv = function(e) {
         e.append(`<option value="0"></option>`);
@@ -22,7 +44,7 @@ jQuery(function($){
         var nx = $("#bookmarklet-ui li").length + 1;
         $("#bookmarklet-ui li").clone().appendTo("ul");
         var current_li = "#bookmarklet-ui li:nth-child(" + nx + ")";
-        //以下、クローンした行の重複id値を直していく
+        //以下、クローンした行の重複id値を直していく（現時点では未完成）
         $(current_li).find("#bkm_nm_1").attr({id: "bkm_nm_" + nx, value: nx.toString()});
 
     });
@@ -308,12 +330,82 @@ jQuery(function($){
         return code;
     };
     
-    //test code
+    //クリアボタンクリック
+    $("#bkm_clear_btn").on("click", function(){
+        $("#bkm_body").val("");
+    });
+    
+    //単一判定ボタンクリック
     $("#bkm_single_create_btn").on("click", function(){
-        //var code = get_code_base();
-        //code += `bkm_util.set_survey_single("いいえ");`;
-        //$("#bkm_body").val(code);
-        alert($("#bkm_nm_1").val());
+        var code = get_code_base();
+        var nx = $("#bookmarklet-ui li").length;
+        var str_sv = "";
+        var str_sv_cp = "any";
+		var str_comment = "";
+		var str_description = "";
+		var str_srccode = "";
+        
+        //判定
+        str_sv = $("#bkm_sv_" + nx + " option:selected").text();
+        code += `bkm_util.set_survey_single("${str_sv}");`;
+        
+        //判定コメント
+        var flg_comment = 
+            ($("input[type=radio][name=bkm_comment_yes_no_" + nx + "]:checked").val() == "yes") ? true : false;
+        var flg_comment_add = 
+            ($("#bkm_comment_add_check_" + nx + ":checked").val() != undefined) ? true : false;
+        var comment_add_pos = $("#bkm_comment_add_point_" + nx + " option:selected").val();
+        //alert(comment_add_pos);
+        
+        if(flg_comment) {
+            str_comment = $("#bkm_comment_" + nx).val();
+            if(flg_comment_add) {
+                if(comment_add_pos == "front") {
+                    code += `var old_comm = bkm_util.get_comment_single();`;
+                    code += `var new_comm = "${str_comment}" + "\\n\\n" + old_comm;`;
+                    code += `bkm_util.set_comment_single(new_comm);`;
+                } else {
+                    code += `var old_comm = bkm_util.get_comment_single();`;
+                    code += `var new_comm = old_comm + "\\n\\n" + "${str_comment}";`;
+                    code += `bkm_util.set_comment_single(new_comm);`;
+                }
+            } else {
+                code += `bkm_util.set_comment_single("${str_comment}");`;
+            }
+        }
+        
+        //対象ソースコード
+        var flg_description = 
+            ($("input[type=radio][name=bkm_description_yes_no_" + nx + "]:checked").val() == "yes") ? true : false;
+
+        if(flg_description) {
+            str_description = $("#bkm_description_" + nx).val();
+            code += `bkm_util.set_description_single("${str_description}");`;
+        }
+                
+        //修正ソースコード
+        var type_srccode = $("input[type=radio][name=bkm_srccode_yes_no_regx_" + nx + "]:checked").val();
+        var str_search = $("#bkm_regx_search_" + nx).val();
+        var str_replace = $("#bkm_regx_replace_" + nx).val();
+        
+        switch(type_srccode) {
+            case "yes":
+                str_srccode = $("#bkm_srccode_" + nx).val();
+                code += `bkm_util.set_srccode_single("${str_srccode}");`;
+                break;
+            case "regx":
+                code += `var new_src = bkm_util.get_description_single();`;
+                code += `var srch_pt = new RegExp(${str_search});`;
+                code += `new_src = new_src.replace(srch_pt, "${str_replace}");`;
+                code += `bkm_util.set_srccode_single(new_src);`;
+                break;
+            default:
+                break;      
+        }
+        
+        //生成したコードを出力
+        $("#bkm_body").val(code);
+        
     });
 
     
