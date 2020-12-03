@@ -43,10 +43,28 @@ jQuery(function($){
         //下処理
         var nx = $("#bookmarklet-ui li").length + 1;
         $("#bookmarklet-ui li").clone().appendTo("ul");
+        //行をクローン
         var current_li = "#bookmarklet-ui li:nth-child(" + nx + ")";
-        //以下、クローンした行の重複id値を直していく（現時点では未完成）
-        $(current_li).find("#bkm_nm_1").attr({id: "bkm_nm_" + nx, value: nx.toString()});
-
+        //重複するid属性値とname属性値を修正（末尾の連番をインクリメントする）
+        $(current_li).find("#bkm_nm_1").attr({id: "bkm_nm_" + nx, value: nx});
+        $(current_li).find("#check_row_1").attr({id: "check_row_" + nx, value: nx});
+        $(current_li).find("#bkm_sv_1").attr({id: "bkm_sv_" + nx});
+        $(current_li).find("input[name=bkm_comment_yes_no_1]").each(function(){
+            $(this).attr({name: "bkm_comment_yes_no_" + nx});
+        });
+        $(current_li).find("#bkm_comment_add_check_1").attr({id: "bkm_comment_add_check_" + nx});
+        $(current_li).find("#bkm_comment_add_point_1").attr({id: "bkm_comment_add_point_" + nx});
+        $(current_li).find("#bkm_comment_1").attr({id: "bkm_comment_" + nx});
+        $(current_li).find("input[name=bkm_description_yes_no_1]").each(function(){
+            $(this).attr({name: "bkm_description_yes_no_" + nx});
+        });
+        $(current_li).find("#bkm_description_1").attr({id: "bkm_description_" + nx});
+        $(current_li).find("input[name=bkm_srccode_yes_no_regx_1]").each(function(){
+            $(this).attr({name: "bkm_srccode_yes_no_regx_" + nx});
+        });
+        $(current_li).find("#bkm_regx_search_1").attr({id: "bkm_regx_search_" + nx});
+        $(current_li).find("#bkm_regx_replace_1").attr({id: "bkm_regx_replace_" + nx});
+        $(current_li).find("#bkm_srccode_1").attr({id: "bkm_srccode_" + nx});
     });
     
     //行を削除クリック
@@ -118,6 +136,9 @@ jQuery(function($){
         code += `var event = document.createEvent("HTMLEvents");`;
         code += `event.initEvent(type, true, false);`;
         code += `obj.dispatchEvent(event);`;
+        code += `}`;
+        code += `save_survey() {`;
+        code += `this.save_survey_btn.click();`;
         code += `}`;
         code += `_single_result() {`;
         code += `var parent = null;`;
@@ -214,7 +235,7 @@ jQuery(function($){
         code += `set_survey_fill(flag) {`;
         code += `var all_results = document.querySelectorAll('select[id^="result_"]');`;
         code += `for(var i=0; i<all_results.length; i++) {`;
-        code += `var key = this.get_survey_key(flag);`;
+        code += `var key = this.get_survey_key_single(flag);`;
         code += `var opts = all_results[i].getElementsByTagName("option");`;
         code += `for(var j=0; j<opts.length; j++) {`;
         code += `var opt = opts[j];`;
@@ -243,18 +264,17 @@ jQuery(function($){
         code += `all_srccodes[i].value = str;`;
         code += `}`;
         code += `}`;
-        code += `diag_clean_single(flag) {`;
-        code += `switch(flag) {`;
-        code += `case "はい":`;
+        code += `force_survey_ok() {`;
+        code += `this.set_survey_fill("はい");`
+        code += `this.set_comment_fill("");`
+        code += `this.set_srccode_fill("");`
+        code += `this.save_survey();`
+        code += `}`;
+        code += `force_survey_na() {`;
+        code += `this.set_survey_fill("なし");`;
         code += `this.set_comment_fill("");`;
         code += `this.set_srccode_fill("");`;
-        code += `break;`;
-        code += `case "なし":`;
-        code += `this.set_comment_fill("");`;
-        code += `this.set_description_fill("");`;
-        code += `this.set_srccode_all_fill("");`;
-        code += `break;`;
-        code += `}`;
+        code += `this.save_survey();`;
         code += `}`;
         code += `_all_result(cell) {`;
         code += `return cell.querySelector('select[id^="result_"]');`;
@@ -402,6 +422,10 @@ jQuery(function($){
             default:
                 break;      
         }
+
+        var auto_save = 
+        ($("input[type=checkbox][id=bkm_auto_save]:checked").val() == "yes") ? true : false;
+        if(auto_save) code += `bkm_util.save_survey();`;
         
         //生成したコードを出力
         $("#bkm_body").val(code);

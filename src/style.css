@@ -26,3 +26,16 @@ header {
 #bookmarklet-ui li div div:first-child {
     width: 140px;
 }
+
+#bookmarklet-ui li .form-check-label,
+#bookmarklet-control-panel .form-check-label {
+    margin-right: 8px;
+}
+
+.form-inline.btm8px {
+    margin-bottom: 8px;
+}
+
+.btn.rgt5px {
+    margin-right: 5px;
+}
