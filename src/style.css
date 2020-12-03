@@ -32,10 +32,18 @@ header {
     margin-right: 8px;
 }
 
+#bookmarklet-paste-panel {
+    margin-bottom: 20px;
+}
+
 .form-inline.btm8px {
     margin-bottom: 8px;
 }
 
 .btn.rgt5px {
     margin-right: 5px;
+}
+
+.form-control.btm8px {
+    margin-bottom: 8px;
 }

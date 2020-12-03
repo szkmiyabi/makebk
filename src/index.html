@@ -14,13 +14,15 @@
 <nav class="navbar navbar-light">
 <h1>Make Bookmarklet</h1>
     <div class="form-inline">
-        <button class="btn btn-primary" id="bkm_formgroup_add_btn">行を追加</button>
-        <button class="btn btn-danger" id="bkm_formgroup_del_btn">行を削除</button>
+        <button class="btn btn-primary rgt5px" id="bkm_formgroup_add_btn">行追加</button>
+        <button class="btn btn-danger rgt5px" id="bkm_formgroup_del_btn">行削除</button>
     </div>
 </nav>
 </header>
 
 <div class="wrap">
+
+
 
 <ul id="bookmarklet-ui">
     <li class="form-line">
@@ -55,6 +57,7 @@
                 </select>
                 </div>
                 <textarea class="form-control" id="bkm_comment_1"></textarea>
+                <button class="btn btn-warning btn-sm" id="bkm_comment_clear_1">クリア</button>
             </div>
             <div>
                 <label><strong>対象ソースコード</strong></label>
@@ -67,6 +70,7 @@
                 しない</label>
                 </div>
                 <textarea class="form-control" id="bkm_description_1"></textarea>
+                <button class="btn btn-warning btn-sm float-left" id="bkm_description_clear_1">クリア</button>
             </div>
             <div>
                 <label><strong>修正ソースコード</strong></label>
@@ -88,25 +92,32 @@
                     <input type="text" class="form-control" id="bkm_regx_replace_1">
                 </div>
                 <textarea class="form-control" id="bkm_srccode_1"></textarea>
+                <button class="btn btn-warning btn-sm" id="bkm_srccode_clear_1">クリア</button>
             </div>
         </div>
     </li>
 </ul>
 
+<div class="form-group" id="bookmarklet-paste-panel">
+    <label><strong>ひな形から貼付</strong></label>
+    <input type="text" id="bkm_paste_source" class="form-control btm8px">
+    <button class="btn btn-primary" id="bkm_data_paste_single">単一貼付</button>
+    <button class="btn btn-danger" id="bkm_data_paste_clear_btn">クリア</button>
+</div>
+
 <div class="form-group" id="bookmarklet-control-panel">
     <label><strong>ブックマークレットの生成</strong></label>
     <div class="form-inline btm8px">
+        <button class="btn btn-primary rgt5px" id="bkm_single_create_btn">単一判定</button>
+        <button class="btn btn-info rgt5px" id="bkm_all_create_btn">複数判定</button>
+        <button class="btn btn-danger rgt5px" id="bkm_clear_btn">クリア</button>
         <label class="form-check-label">
         <input type="checkbox" id="bkm_auto_save" value="yes">
         自動保存する</label>
-        <button class="btn btn-primary rgt5px" id="bkm_single_create_btn">単一判定</button>
-        <button class="btn btn-info rgt5px" id="bkm_all_create_btn">複数判定</button>
-        <button class="btn btn-danger" id="bkm_clear_btn">クリア</button>
     </div>
     <textarea id="bkm_body" class="form-control"></textarea>
 </div>
-    
-</div>
+
 
 </body>
 </html>
