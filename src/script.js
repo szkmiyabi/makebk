@@ -450,6 +450,80 @@ jQuery(function($){
         $("#bkm_body").val(code);
     });
     
+    //要素強調をクリック
+    $("#bkm_tag_marker").on("click", function(){
+        var code = "";
+        var current_check = $("input[id*='check_row_']:checked");
+        if(current_check.length == 0) {
+            alert("行が選択されていません");
+            return;
+        }
+        if(current_check.length > 1) {
+            alert("複数行が選択されています");
+            return;
+        }
+        var nx = null;
+        try {nx = parseInt($("input[id*='check_row_']:checked").attr("id").replace(/check_row_/, ""));} catch(e) { return; }
+        var tag = $("#bkm_regx_search_" + nx).val();
+        code += `javascript:(function(){`;
+        code += `var ats = document.getElementsByTagName("${tag}");`;
+        code += `for(var i=0; i<ats.length; i++){`;
+        code += `var at = ats[i];`;
+        code += `at.setAttribute("style", "display:inline-block;border:2px solid red;");`;
+        code += `}`;
+        code += `})();`;
+        $("#bkm_body").val(code);
+    });
+     
+    //属性明示をクリック
+    $("#bkm_attr_marker").on("click", function(){
+        var code = "";
+        var current_check = $("input[id*='check_row_']:checked");
+        if(current_check.length == 0) {
+            alert("行が選択されていません");
+            return;
+        }
+        if(current_check.length > 1) {
+            alert("複数行が選択されています");
+            return;
+        }
+        var nx = null;
+        try {nx = parseInt($("input[id*='check_row_']:checked").attr("id").replace(/check_row_/, ""));} catch(e) { return; }
+        var tag = $("#bkm_regx_search_" + nx).val();
+        if(tag == "") tag = "*";
+        var attr = $("#bkm_regx_replace_" + nx).val();
+        code += `javascript:(function(){`;
+        code += `var ts = document.getElementsByTagName("${tag}");`;
+        code += `for(var i=0; i<ts.length; i++){`;
+        code += `var t = ts[i];`;
+        code += `var span_html = "";`;
+        code += `var span_style = "";`;
+        code += `var span_id = "bkm-label-span-" + i;`;
+        code += `var type="";`;
+        code += `if(t.hasAttribute("${attr}")) {`;
+        code += `type = "${attr}-is-yes";`;
+        code += `span_style = "padding-right:5px;color:#fff;font-size:12px;padding:1px;background:#3A87AD;border-radius:5px;";`;
+        code += `} else {`;
+        code += `type = "${attr}-is-no";`;
+        code += `span_style = "padding-right:5px;color:#fff;font-size:12px;padding:1px;background:#C00000;border-radius:5px;";`;
+        code += `}`;
+        code += `if(type === "${attr}-is-yes") {`;
+        code += `var vl = t.getAttribute("${attr}");`;
+        code += `span_html = (vl === "") ? "${attr}属性有:(空)" : "${attr}属性有: " + vl;`;
+        code += `span_html = '&lt;' + t.tagName.toLowerCase() + '&gt; , ' + span_html;`;
+        code += `} else if(type === "${attr}-is-no") {`;
+        code += `span_html = '&lt;' + t.tagName.toLowerCase() + '&gt; , ${attr}属性なし';`;
+        code += `}`;
+        code += `var span  = '<span id="' + span_id + '" style="' + span_style + '">' + span_html + '</span>';`;
+        code += `var addelm = document.createElement("span");`;
+        code += `addelm.style.cssText = span_style;`;
+        code += `addelm.innerHTML = span;`;
+        code += `t.prepend(addelm);`;
+        code += `}`;
+        code += `})();`;
+        $("#bkm_body").val(code);
+    });
+    
     //単一判定ボタンクリック
     $("#bkm_single_create_btn").on("click", function(){
         var code = get_code_base();
@@ -684,6 +758,7 @@ jQuery(function($){
             }
         });
     });
+
 
 
 });

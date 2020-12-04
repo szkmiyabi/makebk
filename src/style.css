@@ -3,6 +3,14 @@ header {
     background-color: bisque;
 }
 
+#bookmarklet-control-panel .form-control {
+    height: unset;
+}
+
+#bookmarklet-control-panel .form-control#bkm_body {
+    height: 8em;
+}
+
 #bookmarklet-ui {
     list-style: none;
     margin-block-start: 0;

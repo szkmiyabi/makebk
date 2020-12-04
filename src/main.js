@@ -34,7 +34,7 @@ const rmenu = Menu.buildFromTemplate([
 ]);
 
 function createWindow() {
-    mainWindow = new BrowserWindow({ width: 1140, height: 700});
+    mainWindow = new BrowserWindow({ width: 1140, height: 870});
     mainWindow.loadURL("file://" + __dirname + "/index.html");
     //mainWindow.webContents.toggleDevTools();
     Menu.setApplicationMenu(null);
