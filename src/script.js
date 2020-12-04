@@ -2,7 +2,7 @@ jQuery(function($){
     
     //共用フィールドとメソッド
     const tab_sp = "<bkmk:tab>";
-	const br_sp = "<bkmk:br>";
+    const br_sp = "<bkmk:br>";
     const data_tab_sp = "<bkmk:data:tab>";
     const data_br_sp = "<bkmk:data:br>";
     const hash = {
@@ -530,9 +530,9 @@ jQuery(function($){
         var nx = $("#bookmarklet-ui li").length;
         var str_sv = "";
         var str_sv_cp = "any";
-		var str_comment = "";
-		var str_description = "";
-		var str_srccode = "";
+        var str_comment = "";
+        var str_description = "";
+        var str_srccode = "";
         
         //判定
         str_sv = $("#bkm_sv_" + nx + " option:selected").text();
@@ -704,6 +704,7 @@ jQuery(function($){
                     code += `var srch_pt_${i+1} = new RegExp(${str_search});`;
                     code += `new_src_${i+1} = new_src_${i+1}.replace(srch_pt_${i+1}, "${str_replace}");`;
                     code += `bkm_util._all_set_srccode(body_cell_${i+1}, new_src_${i+1});`;
+                    break;
             }
         }
 
