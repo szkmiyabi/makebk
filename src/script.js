@@ -75,34 +75,33 @@ jQuery(function($){
     
     //行を追加をクリック
     $("#bkm_formgroup_add_btn").on("click", function(){
-        //下処理
-        var nx = $("#bookmarklet-ui li").length + 1;
-        $("#bookmarklet-ui li").clone().appendTo("ul");
         //行をクローン
-        var current_li = "#bookmarklet-ui li:nth-child(" + nx + ")";
+        $("#bookmarklet-ui li:last-child").clone().appendTo("ul");
+        var nx = $("#bookmarklet-ui li").length;
+        var current_li = "#bookmarklet-ui li:last-child";
         //重複するid属性値とname属性値を修正（末尾の連番をインクリメントする）
-        $(current_li).find("#bkm_nm_1").attr({id: "bkm_nm_" + nx, value: nx});
-        $(current_li).find("#check_row_1").attr({id: "check_row_" + nx, value: nx});
-        $(current_li).find("#bkm_sv_1").attr({id: "bkm_sv_" + nx});
-        $(current_li).find("input[name=bkm_comment_yes_no_1]").each(function(){
+        $(current_li).find("input[id*=bkm_nm_]").attr({id: "bkm_nm_" + nx, value: nx});
+        $(current_li).find("input[id*=check_row_]").attr({id: "check_row_" + nx, value: nx});
+        $(current_li).find("select[id*=bkm_sv_]").attr({id: "bkm_sv_" + nx});
+        $(current_li).find("input[name*=bkm_comment_yes_no_]").each(function(){
             $(this).attr({name: "bkm_comment_yes_no_" + nx});
         });
-        $(current_li).find("#bkm_comment_add_check_1").attr({id: "bkm_comment_add_check_" + nx});
-        $(current_li).find("#bkm_comment_add_point_1").attr({id: "bkm_comment_add_point_" + nx});
-        $(current_li).find("#bkm_comment_1").attr({id: "bkm_comment_" + nx});
-        $(current_li).find("#bkm_comment_clear_1").attr({id: "bkm_comment_clear_" + nx});
-        $(current_li).find("input[name=bkm_description_yes_no_1]").each(function(){
+        $(current_li).find("input[id*=bkm_comment_add_check_]").attr({id: "bkm_comment_add_check_" + nx});
+        $(current_li).find("select[id*=bkm_comment_add_point_]").attr({id: "bkm_comment_add_point_" + nx});
+        $(current_li).find("textarea[id*=bkm_comment_]").attr({id: "bkm_comment_" + nx});
+        $(current_li).find("button[id*=bkm_comment_clear_]").attr({id: "bkm_comment_clear_" + nx});
+        $(current_li).find("input[name*=bkm_description_yes_no_]").each(function(){
             $(this).attr({name: "bkm_description_yes_no_" + nx});
         });
-        $(current_li).find("#bkm_description_1").attr({id: "bkm_description_" + nx});
-        $(current_li).find("#bkm_description_clear_1").attr({id: "bkm_description_clear_" + nx});
-        $(current_li).find("input[name=bkm_srccode_yes_no_regx_1]").each(function(){
+        $(current_li).find("textarea[id*=bkm_description_]").attr({id: "bkm_description_" + nx});
+        $(current_li).find("button[id*=bkm_description_clear_]").attr({id: "bkm_description_clear_" + nx});
+        $(current_li).find("input[name*=bkm_srccode_yes_no_regx_]").each(function(){
             $(this).attr({name: "bkm_srccode_yes_no_regx_" + nx});
         });
-        $(current_li).find("#bkm_regx_search_1").attr({id: "bkm_regx_search_" + nx});
-        $(current_li).find("#bkm_regx_replace_1").attr({id: "bkm_regx_replace_" + nx});
-        $(current_li).find("#bkm_srccode_1").attr({id: "bkm_srccode_" + nx});
-        $(current_li).find("#bkm_srccode_clear_1").attr({id: "bkm_srccode_clear_" + nx});
+        $(current_li).find("input[id*=bkm_regx_search_]").attr({id: "bkm_regx_search_" + nx});
+        $(current_li).find("input[id*=bkm_regx_replace_]").attr({id: "bkm_regx_replace_" + nx});
+        $(current_li).find("textarea[id*=bkm_srccode_]").attr({id: "bkm_srccode_" + nx});
+        $(current_li).find("button[id*=bkm_srccode_clear_]").attr({id: "bkm_srccode_clear_" + nx});
         bind_comment_clear_btn();
     });
     
@@ -633,7 +632,7 @@ jQuery(function($){
                     code += `bkm_util._all_set_srccode(body_cell_${i+1}, new_src_${i+1});`;
             }
         }
-        
+
         //生成したコードを出力
         $("#bkm_body").val(code);
     });
