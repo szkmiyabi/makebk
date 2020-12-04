@@ -528,6 +528,98 @@ jQuery(function($){
         
     });
 
+    //複数行フォームコントロール値を配列で返却
+    var _create_all_line_data = function() {
+        var src_arr = new Array();
+        var cnt = $("input[id*=check_row_]").length;
+        for(var i=0; i<cnt; i++) {
+            var row_arr = new Array();
+            //番号
+            var str_nm = $("#bkm_nm_" + (i+1)).val();
+            //判定
+            var str_sv = $("#bkm_sv_" + (i+1) + " option:selected").text();
+            //判定コメント
+            var str_comment = $("#bkm_comment_" + (i+1)).val();
+            var flg_comment = 
+                ($("input[type=radio][name=bkm_comment_yes_no_" + (i+1) + "]:checked").val() == "yes") ? true : false;
+            var flg_comment_add = 
+                ($("#bkm_comment_add_check_" + (i+1) + ":checked").val() != undefined) ? true : false;
+            var comment_add_pos = $("#bkm_comment_add_point_" + (i+1) + " option:selected").val();
+            //対象ソースコード
+            var str_description = $("#bkm_description_" + (i+1)).val();
+            var flg_description = 
+                ($("input[type=radio][name=bkm_description_yes_no_" + (i+1) + "]:checked").val() == "yes") ? true : false;
+            //修正ソースコード
+            var str_srccode = $("#bkm_srccode_" + (i+1)).val();
+            var type_srccode = $("input[type=radio][name=bkm_srccode_yes_no_regx_" + (i+1) + "]:checked").val();
+            var str_search = $("#bkm_regx_search_" + (i+1)).val();
+            var str_replace = $("#bkm_regx_replace_" + (i+1)).val();
+            row_arr.push(str_nm);
+            row_arr.push(str_sv);
+            row_arr.push(str_comment);
+            row_arr.push(flg_comment);
+            row_arr.push(flg_comment_add);
+            row_arr.push(comment_add_pos);
+            row_arr.push(str_description);
+            row_arr.push(flg_description);
+            row_arr.push(str_srccode);
+            row_arr.push(type_srccode);
+            row_arr.push(str_search);
+            row_arr.push(str_replace);
+            src_arr.push(row_arr);
+        }
+        return src_arr;
+    };
+
+    //複数判定ボタンクリック
+    $("#bkm_all_create_btn").on("click", function(){
+        var code = get_code_base();
+        code += `var trs = bkm_util.diag_tbl.rows;`;
+        //複数行フォームコントロール値を配列で取得
+        var data = _create_all_line_data();
+        var nx = data.length;
+        //配列でループ
+        for(var i=0; i<data.length; i++) {
+            var row = data[i];
+            var str_nm = row[0];
+            var str_sv = row[1];
+            var str_comment = row[2];
+            var flg_comment = row[3];
+            var flg_comment_add = row[4];
+            var comment_add_pos = row[5];
+            var str_description = row[6];
+            var flg_description = row[7];
+            var str_srccode = row[8];
+            var type_srccode = row[9];
+            var str_search = row[10];
+            var str_replace = row[11];
+            //順次判定を入れていく（tableはループしない）
+            code += `var tr_${i+1} = trs[${i+1}];`;
+            //判定select格納セル
+            code += `var sv_cell_${i+1} = tr_${i+1}.cells[2];`;
+            //判定コメント/対象ソースコード/修正ソースコードtextareaの格納セル
+            code += `var body_cell_${i+1} = tr_${i+1}.cells[3];`;
+            code += `bkm_util._all_set_survey(sv_cell_${i+1}, "${str_sv}");`;
+            if(flg_comment) {
+                if(flg_comment_add) {
+                    if(comment_add_pos == "front") {
+                        code += `var old_comm = bkm_util._all_get_comment(body_cell_${i+1});`;
+                        code += `var new_comm = "${str_comment}" + "\\n\\n" + old_comm;`;
+                        code += `bkm_util._all_set_comment(body_cell_${i+1}, new_comm);`;
+                    } else {
+                        code += `var old_comm = bkm_util._all_get_comment(body_cell_${i+1});`;
+                        code += `var new_comm = old_comm + "\\n\\n" + "${str_comment}";`;
+                        code += `bkm_util._all_set_comment(body_cell_${i+1}, new_comm);`;
+                    }
+                } else {
+                    code += `bkm_util._all_set_comment(body_cell_${i+1}, "${str_comment}");`;
+                }
+            }
+        }
+
+        $("#bkm_body").val(code);
+    });
+
     //単一貼付ボタンクリック
     $("#bkm_data_paste_single").on("click", function(){
         var current_check = $("input[id*='check_row_']:checked");
