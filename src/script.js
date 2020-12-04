@@ -1,11 +1,10 @@
 jQuery(function($){
     
-    //共用フィールドとメソッド（現時点では未使用）
+    //共用フィールドとメソッド
     const tab_sp = "<bkmk:tab>";
 	const br_sp = "<bkmk:br>";
     const data_tab_sp = "<bkmk:data:tab>";
     const data_br_sp = "<bkmk:data:br>";
-
     const hash = {
         "0": "未判定",
         "1": "はい",
@@ -34,6 +33,7 @@ jQuery(function($){
         else return val;
     };
 
+    //行単位に付随するクリアボタンの挙動をセットアップ
     var bind_comment_clear_btn = function() {
         $("button[id*=bkm_comment_clear_]").each(function(){
             var nx = parseInt($(this).attr("id").replace(/bkm_comment_clear_/, ""));
@@ -388,6 +388,33 @@ jQuery(function($){
         code += `let bkm_util = new bkmLibraPlusUtil();`;
         return code;
     };
+
+    //単一検査データ文字列を配列にバインドして返却
+    var _data_bind_single = function(data) {
+        var arr = new Array();
+        var str_sv = "";
+        var str_sv_cp = "";
+        var str_comment = "";
+        var str_description = "";
+        var str_srccode = "";
+        var tmp = data.split(tab_sp);
+        if(tmp != null) {
+            str_sv = tmp[1].toString().trim();
+            str_sv_cp = tmp[2].toString().trim();
+            if(str_sv_cp === "") str_sv_cp = "no";
+            str_comment = br_decode(get_safe_value(tmp[4]));
+            str_description = br_decode(get_safe_value(tmp[5]));
+            str_srccode = br_decode(get_safe_value(tmp[6]));
+            arr.push(str_sv);
+            arr.push(str_sv_cp);
+            arr.push(str_comment);
+            arr.push(str_description);
+            arr.push(str_srccode);
+            return arr;
+        } else {
+            return null;
+        }
+    };
     
     //クリアボタンクリック
     $("#bkm_clear_btn").on("click", function(){
@@ -398,7 +425,31 @@ jQuery(function($){
         $("#bkm_paste_source").val("");
     });
 
-
+    //URL置換ボタンクリック
+    $("#bkm_url_replacer").on("click", function(){
+        var code = "";
+        var current_check = $("input[id*='check_row_']:checked");
+        if(current_check.length == 0) {
+            alert("行が選択されていません");
+            return;
+        }
+        if(current_check.length > 1) {
+            alert("複数行が選択されています");
+            return;
+        }
+        var nx = null;
+        try {nx = parseInt($("input[id*='check_row_']:checked").attr("id").replace(/check_row_/, ""));} catch(e) { return; }
+        var old_domain = $("#bkm_regx_search_" + nx).val();
+        var new_domain = $("#bkm_regx_replace_" + nx).val();
+        code += `javascript:(function(){`;
+        code += `var odm="${old_domain}";`;
+        code += `var ndm="${new_domain}";`;
+        code += `var ocmstr = location.href;`;
+        code += `var ndmstr = ocmstr.replace(odm,ndm);`;
+        code += `location.href = ndmstr;`;
+        code += `})();`;
+        $("#bkm_body").val(code);
+    });
     
     //単一判定ボタンクリック
     $("#bkm_single_create_btn").on("click", function(){
@@ -477,32 +528,7 @@ jQuery(function($){
         
     });
 
-    var _data_bind_single = function(data) {
-        var arr = new Array();
-        var str_sv = "";
-        var str_sv_cp = "";
-        var str_comment = "";
-        var str_description = "";
-        var str_srccode = "";
-        var tmp = data.split(tab_sp);
-        if(tmp != null) {
-            str_sv = tmp[1].toString().trim();
-            str_sv_cp = tmp[2].toString().trim();
-            if(str_sv_cp === "") str_sv_cp = "no";
-            str_comment = br_decode(get_safe_value(tmp[4]));
-            str_description = br_decode(get_safe_value(tmp[5]));
-            str_srccode = br_decode(get_safe_value(tmp[6]));
-            arr.push(str_sv);
-            arr.push(str_sv_cp);
-            arr.push(str_comment);
-            arr.push(str_description);
-            arr.push(str_srccode);
-            return arr;
-        } else {
-            return null;
-        }
-    };
-
+    //単一貼付ボタンクリック
     $("#bkm_data_paste_single").on("click", function(){
         var current_check = $("input[id*='check_row_']:checked");
         if(current_check.length == 0) {
