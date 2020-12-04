@@ -665,7 +665,25 @@ jQuery(function($){
         $("#bkm_srccode_" + nx).val(arr[4]);
     });
 
-    
+    //行選択ボタンクリック
+    $("#bkm_all_line_select").on("click", function(){
+        $("input[id*=check_row_").each(function(){
+            var chk = $(this).prop("checked");
+            if(!chk) {
+                $(this).prop("checked", "checked");
+            }
+        });
+    });
+
+    //行選択解除ボタンクリック
+    $("#bkm_all_line_unselect").on("click", function(){
+        $("input[id*=check_row_").each(function(){
+            var chk = $(this).prop("checked");
+            if(chk) {
+                $(this).prop("checked", "");
+            }
+        });
+    });
 
 
 });
