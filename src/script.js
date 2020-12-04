@@ -599,24 +599,42 @@ jQuery(function($){
             code += `var sv_cell_${i+1} = tr_${i+1}.cells[2];`;
             //判定コメント/対象ソースコード/修正ソースコードtextareaの格納セル
             code += `var body_cell_${i+1} = tr_${i+1}.cells[3];`;
+            //判定
             code += `bkm_util._all_set_survey(sv_cell_${i+1}, "${str_sv}");`;
+            //判定コメント
             if(flg_comment) {
                 if(flg_comment_add) {
                     if(comment_add_pos == "front") {
-                        code += `var old_comm = bkm_util._all_get_comment(body_cell_${i+1});`;
-                        code += `var new_comm = "${str_comment}" + "\\n\\n" + old_comm;`;
-                        code += `bkm_util._all_set_comment(body_cell_${i+1}, new_comm);`;
+                        code += `var old_comm_${i+1} = bkm_util._all_get_comment(body_cell_${i+1});`;
+                        code += `var new_comm_${i+1} = "${str_comment}" + "\\n\\n" + old_comm_${i+1};`;
+                        code += `bkm_util._all_set_comment(body_cell_${i+1}, new_comm_${i+1});`;
                     } else {
-                        code += `var old_comm = bkm_util._all_get_comment(body_cell_${i+1});`;
-                        code += `var new_comm = old_comm + "\\n\\n" + "${str_comment}";`;
-                        code += `bkm_util._all_set_comment(body_cell_${i+1}, new_comm);`;
+                        code += `var old_comm_${i+1} = bkm_util._all_get_comment(body_cell_${i+1});`;
+                        code += `var new_comm_${i+1} = old_comm_${i+1} + "\\n\\n" + "${str_comment}";`;
+                        code += `bkm_util._all_set_comment(body_cell_${i+1}, new_comm_${i+1});`;
                     }
                 } else {
                     code += `bkm_util._all_set_comment(body_cell_${i+1}, "${str_comment}");`;
                 }
             }
+            //対象ソースコード
+            if(flg_description) {
+                code += `bkm_util._all_set_description(body_cell_${i+1}, "${str_description}");`;
+            }
+            //修正ソースコード
+            switch(type_srccode) {
+                case "yes":
+                    code += `bkm_util._all_set_srccode(body_cell_${i+1}, "${str_srccode}");`;
+                    break;
+                case "regx":
+                    code += `var new_src_${i+1} = bkm_util._all_get_description(body_cell_${i+1});`;
+                    code += `var srch_pt_${i+1} = new RegExp(${str_search});`;
+                    code += `new_src_${i+1} = new_src_${i+1}.replace(srch_pt_${i+1}, "${str_replace}");`;
+                    code += `bkm_util._all_set_srccode(body_cell_${i+1}, new_src_${i+1});`;
+            }
         }
-
+        
+        //生成したコードを出力
         $("#bkm_body").val(code);
     });
 
