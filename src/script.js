@@ -469,6 +469,7 @@ jQuery(function($){
         code += `var ats = document.getElementsByTagName("${tag}");`;
         code += `for(var i=0; i<ats.length; i++){`;
         code += `var at = ats[i];`;
+        code += `console.log(at.outerHTML);`;
         code += `at.setAttribute("style", "display:inline-block;border:2px solid red;");`;
         code += `}`;
         code += `})();`;
@@ -496,6 +497,7 @@ jQuery(function($){
         code += `var ts = document.getElementsByTagName("${tag}");`;
         code += `for(var i=0; i<ts.length; i++){`;
         code += `var t = ts[i];`;
+        code += `console.log(t.outerHTML);`;
         code += `t.setAttribute("style", "border:1px solid navy;");`;
         code += `var span_html = "";`;
         code += `var span_style = "";`;
