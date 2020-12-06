@@ -496,6 +496,7 @@ jQuery(function($){
         code += `var ts = document.getElementsByTagName("${tag}");`;
         code += `for(var i=0; i<ts.length; i++){`;
         code += `var t = ts[i];`;
+        code += `t.setAttribute("style", "border:1px solid navy;");`;
         code += `var span_html = "";`;
         code += `var span_style = "";`;
         code += `var span_id = "bkm-label-span-" + i;`;
@@ -536,7 +537,7 @@ jQuery(function($){
         
         //判定
         str_sv = $("#bkm_sv_" + nx + " option:selected").text();
-        code += `bkm_util.set_survey_single("${str_sv}");`;
+        code += `bkm_util.set_survey_single('${str_sv}');`;
         
         //判定コメント
         var flg_comment = 
@@ -551,15 +552,15 @@ jQuery(function($){
             if(flg_comment_add) {
                 if(comment_add_pos == "front") {
                     code += `var old_comm = bkm_util.get_comment_single();`;
-                    code += `var new_comm = "${str_comment}" + "\\n\\n" + old_comm;`;
+                    code += `var new_comm = '${str_comment}' + "\\n\\n" + old_comm;`;
                     code += `bkm_util.set_comment_single(new_comm);`;
                 } else {
                     code += `var old_comm = bkm_util.get_comment_single();`;
-                    code += `var new_comm = old_comm + "\\n\\n" + "${str_comment}";`;
+                    code += `var new_comm = old_comm + "\\n\\n" + '${str_comment}';`;
                     code += `bkm_util.set_comment_single(new_comm);`;
                 }
             } else {
-                code += `bkm_util.set_comment_single("${str_comment}");`;
+                code += `bkm_util.set_comment_single('${str_comment}');`;
             }
         }
         
@@ -569,7 +570,7 @@ jQuery(function($){
 
         if(flg_description) {
             str_description = $("#bkm_description_" + nx).val();
-            code += `bkm_util.set_description_single("${str_description}");`;
+            code += `bkm_util.set_description_single('${str_description}');`;
         }
                 
         //修正ソースコード
@@ -580,12 +581,12 @@ jQuery(function($){
         switch(type_srccode) {
             case "yes":
                 str_srccode = $("#bkm_srccode_" + nx).val();
-                code += `bkm_util.set_srccode_single("${str_srccode}");`;
+                code += `bkm_util.set_srccode_single('${str_srccode}');`;
                 break;
             case "regx":
                 code += `var new_src = bkm_util.get_description_single();`;
                 code += `var srch_pt = new RegExp(${str_search});`;
-                code += `new_src = new_src.replace(srch_pt, "${str_replace}");`;
+                code += `new_src = new_src.replace(srch_pt, '${str_replace}');`;
                 code += `bkm_util.set_srccode_single(new_src);`;
                 break;
             default:
@@ -673,40 +674,44 @@ jQuery(function($){
             //判定コメント/対象ソースコード/修正ソースコードtextareaの格納セル
             code += `var body_cell_${i+1} = tr_${i+1}.cells[3];`;
             //判定
-            code += `bkm_util._all_set_survey(sv_cell_${i+1}, "${str_sv}");`;
+            code += `bkm_util._all_set_survey(sv_cell_${i+1}, '${str_sv}');`;
             //判定コメント
             if(flg_comment) {
                 if(flg_comment_add) {
                     if(comment_add_pos == "front") {
                         code += `var old_comm_${i+1} = bkm_util._all_get_comment(body_cell_${i+1});`;
-                        code += `var new_comm_${i+1} = "${str_comment}" + "\\n\\n" + old_comm_${i+1};`;
+                        code += `var new_comm_${i+1} = '${str_comment}' + "\\n\\n" + old_comm_${i+1};`;
                         code += `bkm_util._all_set_comment(body_cell_${i+1}, new_comm_${i+1});`;
                     } else {
                         code += `var old_comm_${i+1} = bkm_util._all_get_comment(body_cell_${i+1});`;
-                        code += `var new_comm_${i+1} = old_comm_${i+1} + "\\n\\n" + "${str_comment}";`;
+                        code += `var new_comm_${i+1} = old_comm_${i+1} + "\\n\\n" + '${str_comment}';`;
                         code += `bkm_util._all_set_comment(body_cell_${i+1}, new_comm_${i+1});`;
                     }
                 } else {
-                    code += `bkm_util._all_set_comment(body_cell_${i+1}, "${str_comment}");`;
+                    code += `bkm_util._all_set_comment(body_cell_${i+1}, '${str_comment}');`;
                 }
             }
             //対象ソースコード
             if(flg_description) {
-                code += `bkm_util._all_set_description(body_cell_${i+1}, "${str_description}");`;
+                code += `bkm_util._all_set_description(body_cell_${i+1}, '${str_description}');`;
             }
             //修正ソースコード
             switch(type_srccode) {
                 case "yes":
-                    code += `bkm_util._all_set_srccode(body_cell_${i+1}, "${str_srccode}");`;
+                    code += `bkm_util._all_set_srccode(body_cell_${i+1}, '${str_srccode}');`;
                     break;
                 case "regx":
                     code += `var new_src_${i+1} = bkm_util._all_get_description(body_cell_${i+1});`;
                     code += `var srch_pt_${i+1} = new RegExp(${str_search});`;
-                    code += `new_src_${i+1} = new_src_${i+1}.replace(srch_pt_${i+1}, "${str_replace}");`;
+                    code += `new_src_${i+1} = new_src_${i+1}.replace(srch_pt_${i+1}, '${str_replace}');`;
                     code += `bkm_util._all_set_srccode(body_cell_${i+1}, new_src_${i+1});`;
                     break;
             }
         }
+
+        var auto_save = 
+        ($("input[type=checkbox][id=bkm_auto_save]:checked").val() == "yes") ? true : false;
+        if(auto_save) code += `bkm_util.save_survey();`;
 
         //生成したコードを出力
         $("#bkm_body").val(code);
