@@ -1,8 +1,8 @@
 jQuery(function($){
     
     //共用フィールドとメソッド
-    const tab_sp = "<bkmk:tab>";
-    const br_sp = "<bkmk:br>";
+    const tab_sp = "\\t";
+    const br_sp = `\\r\\n`;
     const data_tab_sp = "<bkmk:data:tab>";
     const data_br_sp = "<bkmk:data:br>";
     const hash = {
@@ -550,7 +550,7 @@ jQuery(function($){
         //alert(comment_add_pos);
         
         if(flg_comment) {
-            str_comment = $("#bkm_comment_" + nx).val();
+            str_comment = br_encode($("#bkm_comment_" + nx).val());
             if(flg_comment_add) {
                 if(comment_add_pos == "front") {
                     code += `var old_comm = bkm_util.get_comment_single();`;
@@ -571,7 +571,7 @@ jQuery(function($){
             ($("input[type=radio][name=bkm_description_yes_no_" + nx + "]:checked").val() == "yes") ? true : false;
 
         if(flg_description) {
-            str_description = $("#bkm_description_" + nx).val();
+            str_description = br_encode($("#bkm_description_" + nx).val());
             code += `bkm_util.set_description_single('${str_description}');`;
         }
                 
@@ -582,7 +582,7 @@ jQuery(function($){
         
         switch(type_srccode) {
             case "yes":
-                str_srccode = $("#bkm_srccode_" + nx).val();
+                str_srccode = br_encode($("#bkm_srccode_" + nx).val());
                 code += `bkm_util.set_srccode_single('${str_srccode}');`;
                 break;
             case "regx":
@@ -615,18 +615,18 @@ jQuery(function($){
             //判定
             var str_sv = $("#bkm_sv_" + (i+1) + " option:selected").text();
             //判定コメント
-            var str_comment = $("#bkm_comment_" + (i+1)).val();
+            var str_comment = br_encode($("#bkm_comment_" + (i+1)).val());
             var flg_comment = 
                 ($("input[type=radio][name=bkm_comment_yes_no_" + (i+1) + "]:checked").val() == "yes") ? true : false;
             var flg_comment_add = 
                 ($("#bkm_comment_add_check_" + (i+1) + ":checked").val() != undefined) ? true : false;
             var comment_add_pos = $("#bkm_comment_add_point_" + (i+1) + " option:selected").val();
             //対象ソースコード
-            var str_description = $("#bkm_description_" + (i+1)).val();
+            var str_description = br_encode($("#bkm_description_" + (i+1)).val());
             var flg_description = 
                 ($("input[type=radio][name=bkm_description_yes_no_" + (i+1) + "]:checked").val() == "yes") ? true : false;
             //修正ソースコード
-            var str_srccode = $("#bkm_srccode_" + (i+1)).val();
+            var str_srccode = br_encode($("#bkm_srccode_" + (i+1)).val());
             var type_srccode = $("input[type=radio][name=bkm_srccode_yes_no_regx_" + (i+1) + "]:checked").val();
             var str_search = $("#bkm_regx_search_" + (i+1)).val();
             var str_replace = $("#bkm_regx_replace_" + (i+1)).val();
