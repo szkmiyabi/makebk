@@ -1,7 +1,7 @@
 jQuery(function($){
     
     //共用フィールドとメソッド
-    const tab_sp = "\\t";
+    const tab_sp = "<bkmk:tab>";
     const br_sp = `\\r\\n`;
     const data_tab_sp = "<bkmk:data:tab>";
     const data_br_sp = "<bkmk:data:br>";
